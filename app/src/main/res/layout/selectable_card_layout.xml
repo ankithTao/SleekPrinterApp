@@ -1,0 +1,48 @@
+<!-- selectable_card_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewParentId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="@android:color/transparent"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/cardImageView"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"/>
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:padding="8dp"
+            android:textColor="@color/purple_200"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/cardLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:fontFamily="@string/action_settings"
+        android:text="Label Text"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+</LinearLayout>

@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">SLEEK</string>
+    <string name="tab_text_1">打印机</string>
+    <string name="tab_text_2">磁卡</string>
+    <string name="tab_text_3">智能卡</string>
+    <string name="action_settings">设置</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="todo">TODO</string>
+    <string name="connect_printer">连接打印机</string>
+    <string name="disconnect_printer">断开连接打印机</string>
+    <string name="use_ip">使用IP连接</string>
+    <string name="Demo">演示</string>
+    <string name="get_printer_status">打印机状态</string>
+    <string name="get_printer_warning">打印机警告</string>
+    <string name="get_printer_info">打印机信息</string>
+    <string name="move_card_to">移动卡到</string>
+    <string name="execute_command">执行命令</string>
+    <string name="set_card_input_output">参数设置</string>
+    <string name="auto_feed_card_when_card_is_detected">检测到卡片时自动进卡</string>
+    <string name="wait_for_removal_after_printing">等待取走卡片</string>
+    <string name="enable_card_out_sensor">启用无卡检测传感器</string>
+    <string name="enable_reject_box_sensor">启用废卡盒传感器</string>
+    <string name="set_standby_parameters">设置待取卡参数</string>
+    <string name="x0_5sec">x0.5秒</string>
+    <string name="print_one_card">无驱打印</string>
+    <string name="print_demo_card">一般打印</string>
+    <string name="simple_print">简单打印</string>
+    <string name="heat_energy_k">热能 K</string>
+    <string name="hi_co">高抗</string>
+    <string name="read_track">读磁</string>
+    <string name="encode_track">写磁</string>
+    <string name="track_1">第一轨</string>
+    <string name="track_2">第二轨</string>
+    <string name="track_3">第三轨</string>
+    <string name="connect_reader">连接读卡器</string>
+    <string name="disconnect_reader">断开读卡器</string>
+    <string name="m1">M1</string>
+    <string name="cpu_type_a">CPU Type A</string>
+    <string name="cpu_type_b">CPU Type B</string>
+    <string name="contact_cpu">Contact CPU</string>
+    <string name="get_reader_info">Get Reader Info</string>
+    <string name="clear_result">Clear Result</string>
+    <string name="SetLogLevel">启用日志</string>
+    <string name="auto_eject">复位自动排卡</string>
+
+</resources>

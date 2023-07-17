@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seaory.seaorydemo.ScardFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/btn_connectReader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_reader"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+
+            <Button
+                android:id="@+id/btn_disconnectReader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/disconnect_reader"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+            <Button
+                android:id="@+id/btn_m1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/m1"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+
+            <Button
+                android:id="@+id/btn_cpuTypeA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cpu_type_a"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+            <Button
+                android:id="@+id/btn_cpuTypeB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cpu_type_b"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+            <Button
+                android:id="@+id/btn_cpu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_cpu"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                />
+
+            <Spinner
+                android:id="@+id/spinner_cpuSlot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/btn_readerInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/get_reader_info"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/btn_clearResult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_result"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
