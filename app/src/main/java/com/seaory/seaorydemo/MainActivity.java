@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 for (CardViewItem obj : cards) {
                     if (obj.isSelected()) {
                         btn_SimplePrint_onClick(obj.getBitmapImage());
-//                        btn_print_bmp(obj.getBitmapImage());
                         return;
                     }
                 }
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!isPrinterConnected()) {
                             btn_connectPrinter_onClick();
                         } else {
-                            btn_disconnectPrinter_onClick();
+//                            btn_disconnectPrinter_onClick();
                         }
                     }
                 }).start();
@@ -193,11 +192,6 @@ public class MainActivity extends AppCompatActivity {
 
                         // Load the image from the printerUrl using Picasso library
                         Bitmap bitmap = Picasso.get().load(printerUrl).get();
-//                        Bitmap noBg = removeBackgroundColor(bitmap);
-//                        Bitmap newBmp = getResizedBitmap(bitmap, 1012, 648);
-//                        Bitmap modifiedBitmap = removeBackgroundColor(bitmap);
-
-//                        Bitmap.createBitmap(1012, 648, Bitmap.Config.ARGB_8888);
 
                         cardViewItems.add(new CardViewItem(id, name, orderStatus, shippingStatus, printerUrl, bitmap, false));
                     }
@@ -255,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void btn_disconnectPrinter_onClick() {
         try {
-            printerFn.CloseDevice();
+//            printerFn.CloseDevice();
             Toast.makeText(MainActivity.this, "Printer Disconnected!", Toast.LENGTH_SHORT).show();
             connectionButton.setText("🛑");
         } catch (Exception e) {
@@ -271,63 +265,11 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, errStr, Toast.LENGTH_SHORT).show();
     }
 
-    public void btn_print_bmp(Bitmap bmp) {
+    public void btn_SimplePrint_onClick(Bitmap bmp) {
         if (!isPrinterConnected()) {
-            Toast.makeText(MainActivity.this, "Please make sure the printer is connected properly \n And a card is selected \n If it is, make sure the status is 🟢!", Toast.LENGTH_LONG).show();
+            btn_connectPrinter_onClick();
             return;
         }
-        int status = 0;
-        String resultStr = "";
-
-        int nBrightness = 0; // Integer.parseInt(editBrightness.getText().toString());
-        int nContrast = 0; // Integer.parseInt(editContrast.getText().toString());
-        int nSharpness = 0; // Integer.parseInt(editSharpness.getText().toString());
-        int nSaturation = 0; // Integer.parseInt(editSaturation.getText().toString());
-
-        try {
-//            Bitmap bitmap = Bitmap.createBitmap(1012, 648, Bitmap.Config.ARGB_8888);
-//            Canvas canvas = new Canvas(bitmap);
-//            Paint paint = new Paint();
-//            paint.setColor(Color.TRANSPARENT);
-//            canvas.drawRect(0F, 0F, (float) 1012, (float) 648, paint);
-
-//            printerFn.SOY_PR_PrintImage(0, 0, 1012, 648, bmp);
-
-//            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-//
-//            Bitmap _bmpFrontColor = Bitmap.createBitmap(1012, 648, conf);
-//            _bmpFrontColor.eraseColor(-1);
-//            Bitmap _bmpFrontK = bmp.createBitmap(1012, 648, conf);
-//            _bmpFrontK.eraseColor(-1);
-
-            Bitmap newBmp = getResizedBitmap(loadBitmapFromAssets("printer-1756.png", this), 1012, 648);
-            printerFn.PrintOneCard(
-                    newBmp,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    // Color adjustment -----------
-                    (short) 0,    // Brightness         -100 ~ 100
-                    (short) 0,    // Contrast               -100 ~ 100
-                    (short) 0,    // Sharpness            0 ~ 100
-                    (short) 0,    // Red Adjustment        -100 ~ 100
-                    (short) 0,    // Green Adjustment      -100 ~ 100
-                    (short) 0,    // Blue Adjustment        -100 ~ 100
-                    (short) 0,    // Saturation            -100 ~ 100
-                    (short) 100  // Gamma    (x0.01)        10 ~ 999
-            );
-
-            Toast.makeText(MainActivity.this, "Printed!", Toast.LENGTH_SHORT).show();
-            postOrderUpdate(getSelectedOrderId());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void btn_SimplePrint_onClick(Bitmap bmp) {
         int status = 0;
         String resultStr = "";
 
@@ -422,6 +364,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     resultStr = "";
                 }
+
+                postOrderUpdate(getSelectedOrderId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -437,6 +381,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void postOrderUpdate(int orderId) {
+        if (orderId == 0) {
+            Toast.makeText(MainActivity.this, "Unable to update card printed status", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String apiUrl = "https://api.sosleek.io/rpc/events/updateIrlCard?orderId=" + orderId;
         JSONObject requestBody = new JSONObject();
         try {
@@ -500,34 +448,6 @@ public class MainActivity extends AppCompatActivity {
         canvas.drawBitmap(bitmap, 0, 0, paint);
         return resultBitmap;
     }
-
-//    private  Bitmap removeColor2(Bitmap bmp) {
-//        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-//
-//        Bitmap _bmpFrontColor = Bitmap.createBitmap(1012, 648, conf);
-//        _bmpFrontColor.eraseColor(-1);
-//
-//        Canvas _canvasFrontColor = new Canvas(_bmpFrontColor);
-//        _canvasFrontColor.drawBitmap;
-//    }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
-
     private boolean isPrinterConnected() {
         return connectionButton.getText().equals("🟢");
     }
