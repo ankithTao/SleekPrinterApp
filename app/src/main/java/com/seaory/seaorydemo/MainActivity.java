@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 for (CardViewItem obj : cards) {
                     if (obj.isSelected()) {
-                        btn_SimplePrint_onClick(obj.getBitmapImage());
+                        btn_simplePrint_onClick(obj);
                         return;
                     }
                 }
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void btn_disconnectPrinter_onClick() {
         try {
-//            printerFn.CloseDevice();
+            printerFn.CloseDevice();
             Toast.makeText(MainActivity.this, "Printer Disconnected!", Toast.LENGTH_SHORT).show();
             connectionButton.setText("🛑");
         } catch (Exception e) {
@@ -265,107 +265,107 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, errStr, Toast.LENGTH_SHORT).show();
     }
 
-    public void btn_SimplePrint_onClick(Bitmap bmp) {
+    public void btn_simplePrint_onClick(CardViewItem obj) {
         if (!isPrinterConnected()) {
             btn_connectPrinter_onClick();
-            return;
         }
+        Bitmap bmp = obj.getBitmapImage();
         int status = 0;
         String resultStr = "";
 
         int nHeatFrontK = 0, nRespFrontK = 0;
         try {
 
-                int nX = 0, nY = 0, nWidth = 0, nHeight = 0;
-                boolean b600x600dpi = false;
-                char[] szModel = new char[64];
-                status = printerFn.GetPrinterInfo(SeaorySDK.INFO_MODEL_NAME, szModel);
+            int nX = 0, nY = 0, nWidth = 0, nHeight = 0;
+            boolean b600x600dpi = false;
+            char[] szModel = new char[64];
+            status = printerFn.GetPrinterInfo(SeaorySDK.INFO_MODEL_NAME, szModel);
 
-                String modelName = new String(szModel).trim();
-                if (modelName.compareTo("R600") == 0 || modelName.compareTo("R600M") == 0 || modelName.compareTo("DCE905") == 0 || modelName.compareTo("DR600") == 0 || modelName.compareTo("D600") == 0)
-                    b600x600dpi = true;
+            String modelName = new String(szModel).trim();
+            if (modelName.compareTo("R600") == 0 || modelName.compareTo("R600M") == 0 || modelName.compareTo("DCE905") == 0 || modelName.compareTo("DR600") == 0 || modelName.compareTo("D600") == 0)
+                b600x600dpi = true;
 
-                SeaorySDK.SEAORY_DOC_PROP docProp = new SeaorySDK.SEAORY_DOC_PROP();
-                docProp.byResolution = 0;
-                docProp.byPrintSide = 1;
-                printerFn.SetHeatingEnergy(
-                        (short) 0,    //Front YMC
-                        (short) nHeatFrontK,    //Front K
-                        (short) 0,    //Front O
-                        (short) 0,    //Front Resin K
-                        (short) 0,    //Back  YMC
-                        (short) 0,    //Back  K
-                        (short) 0,    //Back  O
-                        (short) 0,     //Back  Resin K
-                        (short) nRespFrontK,    //Front K
-                        (short) 0    //Back  K
-                );
+            SeaorySDK.SEAORY_DOC_PROP docProp = new SeaorySDK.SEAORY_DOC_PROP();
+            docProp.byResolution = 0;
+            docProp.byPrintSide = 1;
+            printerFn.SetHeatingEnergy(
+                    (short) 0,    //Front YMC
+                    (short) nHeatFrontK,    //Front K
+                    (short) 0,    //Front O
+                    (short) 0,    //Front Resin K
+                    (short) 0,    //Back  YMC
+                    (short) 0,    //Back  K
+                    (short) 0,    //Back  O
+                    (short) 0,     //Back  Resin K
+                    (short) nRespFrontK,    //Front K
+                    (short) 0    //Back  K
+            );
 
-                status = printerFn.SOY_PR_StartPrinting(docProp);
-                resultStr = "SOY_PR_StartPrinting() return " + status + ".\n";
+            status = printerFn.SOY_PR_StartPrinting(docProp);
+            resultStr = "SOY_PR_StartPrinting() return " + status + ".\n";
 //                showResultString(100, resultStr);
 
-                status = printerFn.SOY_PR_StartPage();
-                resultStr = "SOY_PR_StartPage() return " + status + ".\n";
+            status = printerFn.SOY_PR_StartPage();
+            resultStr = "SOY_PR_StartPage() return " + status + ".\n";
 //                showResultString(100, resultStr);
 
-                Bitmap aBmp = bmp;// loadBitmapFromAssets("printer-1756.png", this);
-                nX = 60;
-                nY = 120;
-                nWidth = 300;
-                nHeight = 400;
-                if (b600x600dpi) {
-                    nX *= 2;
-                    nY *= 2;
-                    nWidth *= 2;
-                    nHeight *= 2;
+            Bitmap aBmp = bmp;// loadBitmapFromAssets("printer-1756.png", this);
+            nX = 60;
+            nY = 120;
+            nWidth = 300;
+            nHeight = 400;
+            if (b600x600dpi) {
+                nX *= 2;
+                nY *= 2;
+                nWidth *= 2;
+                nHeight *= 2;
+            }
+            status = printerFn.SOY_PR_PrintImage(0, 0, 1012, 648, aBmp);
+            resultStr = "SOY_PR_PrintImage() return " + status + ".\n";
+
+
+            status = printerFn.SOY_PR_EndPrinting(false);
+            resultStr = "SOY_PR_EndPrinting() return " + status + ".\n";
+
+            resultStr = "";
+            if (status == 0)//send print data to printer ok
+            {
+                //wait printer to print card completely
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
                 }
-                status = printerFn.SOY_PR_PrintImage(0, 0, 1012, 648, aBmp);
-                resultStr = "SOY_PR_PrintImage() return " + status + ".\n";
 
+                int i = 0;
+                String TAG = "SeaoryDemo";
+                while (true) {
+                    status = printerFn.CheckStatus();
 
-                status = printerFn.SOY_PR_EndPrinting(false);
-                resultStr = "SOY_PR_EndPrinting() return " + status + ".\n";
+                    Log.i("TAG", String.format("CheckStatus(%d) return 0x%08X,", i, status));
 
-                resultStr = "";
-                if (status == 0)//send print data to printer ok
-                {
-                    //wait printer to print card completely
+                    if (status != 170)
+                        break;
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }
-
-                    int i = 0;
-                    String TAG = "SeaoryDemo";
-                    while (true) {
-                        status = printerFn.CheckStatus();
-
-                        Log.i("TAG", String.format("CheckStatus(%d) return 0x%08X,", i, status));
-
-                        if (status != 170)
-                            break;
-
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                        i++;
-                    }
-
-                    if (status != 0) {
-                        resultStr = "Printer status = " + status;
-                        resultStr += " (" + printerFn.errorMap.get((int) status) + ")";
-                        resultStr += "\n";
-                        Log.i(TAG, resultStr);
-                    }
-                } else {
-                    resultStr = "";
+                    i++;
                 }
 
-                postOrderUpdate(getSelectedOrderId());
+                if (status != 0) {
+                    resultStr = "Printer status = " + status;
+                    resultStr += " (" + printerFn.errorMap.get((int) status) + ")";
+                    resultStr += "\n";
+                    Log.i(TAG, resultStr);
+                }
+            } else {
+                resultStr = "";
+            }
+
+            postOrderUpdate(getSelectedOrderId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -377,14 +377,10 @@ public class MainActivity extends AppCompatActivity {
                 return obj.getId();
             }
         }
-        return 0; // Return an appropriate default value or handle the case when no card is selected
+        return -1; // Return an appropriate default value or handle the case when no card is selected
     }
 
     public void postOrderUpdate(int orderId) {
-        if (orderId == 0) {
-            Toast.makeText(MainActivity.this, "Unable to update card printed status", Toast.LENGTH_SHORT).show();
-            return;
-        }
         String apiUrl = "https://api.sosleek.io/rpc/events/updateIrlCard?orderId=" + orderId;
         JSONObject requestBody = new JSONObject();
         try {
